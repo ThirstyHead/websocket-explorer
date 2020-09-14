@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>WebSocket Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Scott Davis <scott@thirstyhead.com>">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <script>
+      window.addEventListener('load', init);
+
+      function init(){
+        let socket = new WebSocket('ws://localhost:3001');
+
+        socket.onopen = (event) => {
+          console.log(`Opening socket:`);
+          console.dir(event);
+          socket.send('Hello World!');
+        }
+
+        socket.onmessage = (event) => {
+          console.log(`Incoming message:`);
+          console.dir(event);
+          write(event.data);
+        }
+
+        socket.onclose = (event) => {
+          console.log(`Closing socket:`);
+          console.dir(event);
+        }
+      }
+
+      function write(message){
+        let messages = document.querySelector('#messages');
+        messages.insertAdjacentHTML('beforeend', `<p>${message}</p>`);
+      }
+    </script>
+  </head>
+
+  <body>
+    <h1>WebSocket Explorer</h1>
+
+    <div id="messages"></div>
+  </body>
+</html>
