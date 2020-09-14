@@ -8,39 +8,89 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
+    <style>
+      form{
+        padding-bottom: 1em;
+      }
+
+      input[type='submit']{
+        background-color: #ccc;
+      }
+
+      label{
+        font-weight: bold;
+      }
+
+      #messages{
+        width: 50vw;
+        border: solid black 1px;
+        padding: 1em;
+      }
+
+      #newMessage{
+        width: 75vw;
+      }
+
+      .incoming{
+        text-align: right;
+      }
+
+      .outgoing{
+        text-align: left;
+        font-style: italic;
+      }
+    </style>
+
     <script>
       window.addEventListener('load', init);
+      let socket = undefined;
 
       function init(){
-        let socket = new WebSocket('ws://localhost:3001');
+        let form = document.querySelector('#newMessageForm');
+        form.addEventListener('submit', (event) => submitHandler(event));
+
+        socket = new WebSocket('ws://localhost:3001');
 
         socket.onopen = (event) => {
-          console.log(`Opening socket:`);
-          console.dir(event);
-          socket.send('Hello World!');
+          send('Hello World');
         }
 
         socket.onmessage = (event) => {
-          console.log(`Incoming message:`);
-          console.dir(event);
-          write(event.data);
+          write(event.data, 'incoming');
         }
 
         socket.onclose = (event) => {
-          console.log(`Closing socket:`);
-          console.dir(event);
         }
       }
 
-      function write(message){
+      function write(message, type){
         let messages = document.querySelector('#messages');
-        messages.insertAdjacentHTML('beforeend', `<p>${message}</p>`);
+        messages.insertAdjacentHTML('beforeend', `<p class='${type}'>${message}</p>`);
+      }
+
+      function send(message){
+        socket.send(message);
+        write(message, 'outgoing');
+      }
+
+      function submitHandler(event){
+        event.preventDefault();
+        let form = event.srcElement;
+        let fields = new FormData(form);
+        send(fields.get('newMessage'));
+        form.reset();
       }
     </script>
   </head>
 
   <body>
     <h1>WebSocket Explorer</h1>
+
+    <form id="newMessageForm">
+      <label for="newMessage">New Message</label>
+      <input type="text" name="newMessage" id="newMessage"></input>
+      <br><input type="submit" id="sendButton" value="Send"></input>
+    </form>
 
     <div id="messages"></div>
   </body>
