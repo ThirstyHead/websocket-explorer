@@ -1,0 +1,22 @@
+{
+  "name": "websocket-explorer",
+  "version": "0.1.0",
+  "description": "A Exploration of WebSocket",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThirstyHead/websocket-explorer.git"
+  },
+  "author": "Scott Davis <scott@thirstyhead.com>",
+  "license": "CC-BY-4.0",
+  "bugs": {
+    "url": "https://github.com/ThirstyHead/websocket-explorer/issues"
+  },
+  "homepage": "https://github.com/ThirstyHead/websocket-explorer#readme",
+  "dependencies": {
+    "ws": "^7.3.1"
+  }
+}
