@@ -49,7 +49,7 @@
         let form = document.querySelector('#newMessageForm');
         form.addEventListener('submit', (event) => submitHandler(event));
 
-        socket = new WebSocket('ws://localhost:3001');
+        socket = new WebSocket('ws://localhost:3000');
 
         socket.onopen = (event) => {
           send('Hello World');
